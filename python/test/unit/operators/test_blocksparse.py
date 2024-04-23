@@ -164,9 +164,10 @@ def test_attention_fwd_bwd(
     batch_size=2,
     n_heads=2,
 ):
-    capability = torch.cuda.get_device_capability()
-    if capability[0] < 7:
-        pytest.skip("Only test tl.dot() on devices with sm >= 70")
+    if torch.cuda.is_available():
+        capability = torch.cuda.get_device_capability()
+        if capability[0] < 7:
+            pytest.skip("Only test tl.dot() on devices with sm >= 70")
 
     # inputs
     qkv_shape = (batch_size, n_heads, n_ctx, 64)
